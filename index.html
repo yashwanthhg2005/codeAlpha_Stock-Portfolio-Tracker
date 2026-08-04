@@ -1,0 +1,1632 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stock Portfolio Tracker | Track Your Investments Instantly</title>
+  <meta name="description" content="A modern, glassmorphism-inspired single-page Stock Portfolio Tracker. Add stocks, view real-time calculations, search, export to CSV/TXT, and toggle dark/light theme.">
+  
+  <!-- Google Fonts: Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* CSS CUSTOM VARIABLES FOR LIGHT & DARK MODE */
+    :root {
+      --font-family: 'Poppins', sans-serif;
+      
+      /* Dark Theme Colors (Default) */
+      --bg-gradient: linear-gradient(135deg, #070913 0%, #0f172a 40%, #1e1b4b 75%, #2e1065 100%);
+      --blob-1-color: rgba(59, 130, 246, 0.45); /* Blue */
+      --blob-2-color: rgba(168, 85, 247, 0.4);  /* Purple */
+      
+      --card-bg: rgba(15, 23, 42, 0.45);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      
+      --input-bg: rgba(15, 23, 42, 0.6);
+      --input-border: rgba(255, 255, 255, 0.08);
+      --input-focus-border: #3b82f6;
+      --input-focus-glow: rgba(59, 130, 246, 0.25);
+      
+      --btn-primary-bg: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+      --btn-primary-text: #ffffff;
+      --btn-primary-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+      --btn-primary-hover: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
+      
+      --btn-danger-bg: linear-gradient(135deg, #ef4444 0%, #f43f5e 100%);
+      --btn-danger-text: #ffffff;
+      --btn-danger-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
+      --btn-danger-hover: linear-gradient(135deg, #dc2626 0%, #e11d48 100%);
+      
+      --btn-secondary-bg: rgba(255, 255, 255, 0.06);
+      --btn-secondary-text: #f8fafc;
+      --btn-secondary-border: rgba(255, 255, 255, 0.08);
+      --btn-secondary-hover: rgba(255, 255, 255, 0.12);
+      
+      --success-color: #10b981;
+      --success-bg: rgba(16, 185, 129, 0.15);
+      --success-border: rgba(16, 185, 129, 0.3);
+      
+      --error-color: #f43f5e;
+      --error-bg: rgba(244, 63, 94, 0.15);
+      --error-border: rgba(244, 63, 94, 0.3);
+      
+      --table-header-bg: rgba(255, 255, 255, 0.03);
+      --table-row-hover: rgba(255, 255, 255, 0.02);
+      --table-border: rgba(255, 255, 255, 0.05);
+      
+      --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      --card-glow: 0 0 30px rgba(99, 102, 241, 0.15);
+      --pill-bg: rgba(255, 255, 255, 0.05);
+      --pill-hover: rgba(255, 255, 255, 0.12);
+      --scrollbar-thumb: rgba(255, 255, 255, 0.15);
+      --scrollbar-thumb-hover: rgba(255, 255, 255, 0.3);
+    }
+
+    [data-theme="light"] {
+      /* Light Theme Colors */
+      --bg-gradient: linear-gradient(135deg, #eef2f6 0%, #e2e8f0 50%, #dbeafe 100%);
+      --blob-1-color: rgba(147, 197, 253, 0.6); /* Soft blue */
+      --blob-2-color: rgba(216, 180, 254, 0.65); /* Soft purple */
+      
+      --card-bg: rgba(255, 255, 255, 0.45);
+      --card-border: rgba(255, 255, 255, 0.6);
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      
+      --input-bg: rgba(255, 255, 255, 0.7);
+      --input-border: rgba(0, 0, 0, 0.08);
+      --input-focus-border: #3b82f6;
+      --input-focus-glow: rgba(59, 130, 246, 0.15);
+      
+      --btn-primary-bg: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+      --btn-primary-text: #ffffff;
+      --btn-primary-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+      --btn-primary-hover: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+      
+      --btn-danger-bg: linear-gradient(135deg, #ef4444 0%, #f43f5e 100%);
+      --btn-danger-text: #ffffff;
+      --btn-danger-shadow: 0 4px 15px rgba(239, 68, 68, 0.15);
+      --btn-danger-hover: linear-gradient(135deg, #dc2626 0%, #e11d48 100%);
+      
+      --btn-secondary-bg: rgba(0, 0, 0, 0.04);
+      --btn-secondary-text: #0f172a;
+      --btn-secondary-border: rgba(0, 0, 0, 0.05);
+      --btn-secondary-hover: rgba(0, 0, 0, 0.08);
+      
+      --success-color: #059669;
+      --success-bg: rgba(5, 150, 105, 0.1);
+      --success-border: rgba(5, 150, 105, 0.2);
+      
+      --error-color: #dc2626;
+      --error-bg: rgba(220, 38, 38, 0.1);
+      --error-border: rgba(220, 38, 38, 0.2);
+      
+      --table-header-bg: rgba(0, 0, 0, 0.03);
+      --table-row-hover: rgba(0, 0, 0, 0.02);
+      --table-border: rgba(0, 0, 0, 0.05);
+      
+      --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+      --card-glow: 0 0 30px rgba(59, 130, 246, 0.06);
+      --pill-bg: rgba(0, 0, 0, 0.04);
+      --pill-hover: rgba(0, 0, 0, 0.08);
+      --scrollbar-thumb: rgba(0, 0, 0, 0.12);
+      --scrollbar-thumb-hover: rgba(0, 0, 0, 0.25);
+    }
+
+    /* GLOBAL RESET */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-family);
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-gradient);
+      color: var(--text-primary);
+      transition: background 0.5s ease, color 0.5s ease;
+      position: relative;
+      overflow-x: hidden;
+      justify-content: space-between;
+    }
+
+    /* FLOATING BACKGROUND BLOBS */
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: 1;
+      opacity: 0.8;
+      pointer-events: none;
+      animation: floatAnimation 25s infinite alternate ease-in-out;
+    }
+
+    .blob-1 {
+      width: 450px;
+      height: 450px;
+      background: var(--blob-1-color);
+      top: -150px;
+      left: -150px;
+      transition: background 0.5s ease;
+    }
+
+    .blob-2 {
+      width: 550px;
+      height: 550px;
+      background: var(--blob-2-color);
+      bottom: -150px;
+      right: -150px;
+      animation-delay: -7s;
+      transition: background 0.5s ease;
+    }
+
+    @keyframes floatAnimation {
+      0% {
+        transform: translate(0, 0) scale(1);
+      }
+      33% {
+        transform: translate(80px, 50px) scale(1.1);
+      }
+      66% {
+        transform: translate(-50px, 90px) scale(0.9);
+      }
+      100% {
+        transform: translate(40px, -60px) scale(1.05);
+      }
+    }
+
+    /* MAIN CONTAINER */
+    .app-container {
+      width: 92%;
+      max-width: 1200px;
+      margin: 40px auto;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      z-index: 10;
+      position: relative;
+    }
+
+    /* HEADER & WRAPPERS */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 24px 30px;
+      box-shadow: var(--shadow);
+      animation: slideDown 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes slideDown {
+      from {
+        transform: translateY(-30px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .header-left h1 {
+      font-size: 1.85rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #3b82f6 0%, #a855f7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.2;
+    }
+
+    .header-left p {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+      font-weight: 400;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .clock-card {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      background: rgba(255, 255, 255, 0.03);
+      padding: 8px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+      white-space: nowrap;
+    }
+    
+    [data-theme="light"] .clock-card {
+      background: rgba(0, 0, 0, 0.02);
+    }
+
+    .theme-toggle-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid var(--card-border);
+      background: var(--btn-secondary-bg);
+      color: var(--text-primary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .theme-toggle-btn:hover {
+      background: var(--btn-secondary-hover);
+      transform: scale(1.08) rotate(15deg);
+    }
+
+    .theme-toggle-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+    }
+
+    /* GLASS CARD COMMON COMPONENT */
+    .glass-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 26px;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .glass-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -50%;
+      width: 200%;
+      height: 100%;
+      background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.01) 50%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      transform: rotate(30deg);
+      transition: 0.8s;
+      pointer-events: none;
+    }
+    
+    .glass-card:hover::before {
+      left: 100%;
+    }
+
+    /* DASHBOARD GRID LAYOUT */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 30px;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .col-left {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .col-right {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* HIGHLIGHT VALUE CARD */
+    .highlight-card {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(59, 130, 246, 0.15) 100%), var(--card-bg);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      box-shadow: var(--shadow), var(--card-glow);
+      text-align: center;
+    }
+    
+    [data-theme="light"] .highlight-card {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(139, 92, 246, 0.08) 100%), var(--card-bg);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+    }
+
+    .highlight-card .stat-label {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-secondary);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .highlight-card .total-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.3s ease;
+    }
+
+    .highlight-card .total-shares-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--pill-bg);
+      border: 1px solid var(--card-border);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    /* CARD HEADINGS */
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card-title svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--input-focus-border);
+      fill: none;
+      stroke-width: 2;
+    }
+
+    /* FORM INPUTS & LABELS */
+    .form-group {
+      margin-bottom: 18px;
+      position: relative;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 14px;
+      width: 18px;
+      height: 18px;
+      color: var(--text-secondary);
+      pointer-events: none;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 12px 14px 12px 42px;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 12px;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      transition: all 0.3s ease;
+      outline: none;
+    }
+
+    .input-field::placeholder {
+      color: var(--text-secondary);
+      opacity: 0.65;
+    }
+
+    .input-field:focus {
+      border-color: var(--input-focus-border);
+      box-shadow: 0 0 0 3px var(--input-focus-glow);
+      background: var(--input-bg);
+    }
+
+    /* SUGGESTIONS & AUTOCOMPLETE TAGS */
+    .stock-suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .stock-chip {
+      background: var(--pill-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-secondary);
+      padding: 5px 10px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .stock-chip:hover {
+      background: var(--pill-hover);
+      color: var(--text-primary);
+      transform: translateY(-2px);
+      border-color: var(--input-focus-border);
+    }
+
+    /* DYNAMIC PRICE PREVIEW */
+    .price-preview {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+      padding: 8px 12px;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 8px;
+      font-size: 0.8rem;
+      border: 1px solid var(--card-border);
+    }
+    
+    [data-theme="light"] .price-preview {
+      background: rgba(0, 0, 0, 0.01);
+    }
+
+    .price-preview-label {
+      color: var(--text-secondary);
+    }
+
+    .price-preview-value {
+      font-weight: 600;
+      color: var(--success-color);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* ACTION BUTTONS */
+    .btn {
+      width: 100%;
+      padding: 13px 20px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      background: var(--btn-primary-bg);
+      color: var(--btn-primary-text);
+      box-shadow: var(--btn-primary-shadow);
+    }
+
+    .btn-primary:hover {
+      background: var(--btn-primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(59, 130, 246, 0.4);
+    }
+
+    .btn-danger {
+      background: var(--btn-danger-bg);
+      color: var(--btn-danger-text);
+      box-shadow: var(--btn-danger-shadow);
+    }
+
+    .btn-danger:hover {
+      background: var(--btn-danger-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-secondary {
+      background: var(--btn-secondary-bg);
+      color: var(--btn-secondary-text);
+      border: 1px solid var(--btn-secondary-border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--btn-secondary-hover);
+      transform: translateY(-2px);
+    }
+
+    .actions-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .actions-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    /* RIGHT COLUMN - TABLE HEAD CONTROLS */
+    .table-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .search-wrapper {
+      position: relative;
+      flex-grow: 1;
+      max-width: 350px;
+      min-width: 240px;
+    }
+
+    .table-count-badge {
+      font-size: 0.85rem;
+      background: var(--pill-bg);
+      border: 1px solid var(--card-border);
+      padding: 6px 14px;
+      border-radius: 12px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    /* TABLE LAYOUT */
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid var(--table-border);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.92rem;
+    }
+
+    th {
+      background: var(--table-header-bg);
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--table-border);
+    }
+
+    td {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--table-border);
+      color: var(--text-primary);
+      font-weight: 400;
+      transition: background 0.2s ease;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tbody tr {
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    tbody tr:hover {
+      background: var(--table-row-hover);
+    }
+
+    .symbol-td {
+      font-weight: 600;
+      color: var(--input-focus-border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .symbol-logo {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    
+    [data-theme="light"] .symbol-logo {
+      background: rgba(0, 0, 0, 0.03);
+    }
+
+    .delete-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 1px solid rgba(239, 68, 68, 0.15);
+      background: rgba(239, 68, 68, 0.05);
+      color: var(--error-color);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .delete-btn:hover {
+      background: var(--error-color);
+      color: #ffffff;
+      border-color: var(--error-color);
+      transform: scale(1.08);
+      box-shadow: 0 2px 10px rgba(239, 68, 68, 0.2);
+    }
+
+    .delete-btn svg {
+      width: 15px;
+      height: 15px;
+    }
+
+    /* EMPTY PORTFOLIO STATE */
+    .empty-state {
+      padding: 60px 20px;
+      text-align: center;
+      color: var(--text-secondary);
+    }
+
+    .empty-state svg {
+      width: 50px;
+      height: 50px;
+      stroke: var(--text-secondary);
+      stroke-width: 1.5;
+      fill: none;
+      opacity: 0.4;
+      margin-bottom: 16px;
+    }
+
+    .empty-state p {
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+    }
+
+    .empty-state span {
+      font-size: 0.8rem;
+      opacity: 0.7;
+    }
+
+    /* TOAST NOTIFICATION CONTAINER & SYSTEM */
+    .toast-container {
+      position: fixed;
+      top: 30px;
+      right: 30px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      pointer-events: none;
+      width: 380px;
+      max-width: calc(100vw - 60px);
+    }
+
+    .toast {
+      padding: 14px 20px;
+      border-radius: 14px;
+      color: var(--text-primary);
+      font-weight: 500;
+      font-size: 0.88rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      pointer-events: auto;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      animation: toastSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+                 toastFadeOut 0.35s 3.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      border: 1px solid transparent;
+    }
+
+    .toast-success {
+      background: rgba(16, 185, 129, 0.12);
+      border-color: var(--success-border);
+      border-left: 5px solid var(--success-color);
+    }
+    
+    [data-theme="light"] .toast-success {
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .toast-error {
+      background: rgba(244, 63, 94, 0.12);
+      border-color: var(--error-border);
+      border-left: 5px solid var(--error-color);
+    }
+    
+    [data-theme="light"] .toast-error {
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .toast-icon {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+    }
+
+    .toast-icon-success {
+      color: var(--success-color);
+    }
+
+    .toast-icon-error {
+      color: var(--error-color);
+    }
+
+    .toast-msg {
+      flex-grow: 1;
+      line-height: 1.4;
+    }
+
+    @keyframes toastSlideIn {
+      from {
+        transform: translateX(110%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes toastFadeOut {
+      from {
+        transform: translateX(0);
+        opacity: 1;
+      }
+      to {
+        transform: translateX(110%);
+        opacity: 0;
+      }
+    }
+
+    /* FOOTER */
+    footer {
+      width: 100%;
+      text-align: center;
+      padding: 24px;
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      border-top: 1px solid var(--card-border);
+      background: rgba(15, 23, 42, 0.2);
+      backdrop-filter: blur(10px);
+      z-index: 10;
+      margin-top: auto;
+    }
+    
+    [data-theme="light"] footer {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    footer p {
+      letter-spacing: 0.5px;
+      font-weight: 400;
+    }
+
+    footer .heart {
+      color: #ef4444;
+      display: inline-block;
+      animation: heartbeat 1.5s infinite;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+    }
+
+    /* CUSTOM SCROLLBAR FOR TABLE */
+    .table-container::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .table-container::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .table-container::-webkit-scrollbar-thumb {
+      background: var(--scrollbar-thumb);
+      border-radius: 4px;
+    }
+
+    .table-container::-webkit-scrollbar-thumb:hover {
+      background: var(--scrollbar-thumb-hover);
+    }
+
+    /* RESPONSIVE DESIGN - BREAKPOINTS */
+    @media (max-width: 1024px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 35px;
+      }
+      
+      .col-left {
+        gap: 30px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .app-container {
+        margin: 20px auto;
+        gap: 20px;
+      }
+      
+      header {
+        padding: 20px 24px;
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .header-right {
+        justify-content: space-between;
+      }
+
+      .glass-card {
+        padding: 20px;
+      }
+
+      .highlight-card .total-value {
+        font-size: 2.1rem;
+      }
+
+      .actions-row {
+        grid-template-columns: 1fr;
+      }
+
+      .table-controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .search-wrapper {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- FLOATING GRAPHICS FOR GLASS EFFECT -->
+  <div class="blob blob-1" id="blob1"></div>
+  <div class="blob blob-2" id="blob2"></div>
+
+  <!-- MAIN APP WRAPPER -->
+  <div class="app-container">
+    
+    <!-- HEADER SECTION -->
+    <header>
+      <div class="header-left">
+        <h1>Stock Portfolio Tracker</h1>
+        <p>Track your investments instantly</p>
+      </div>
+      <div class="header-right">
+        <div class="clock-card" id="clock-card">
+          <!-- Calendar Icon -->
+          <svg style="width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:2" viewBox="0 0 24 24">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          <span id="live-time">Loading date & time...</span>
+        </div>
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle light/dark mode">
+          <!-- Moon Icon (Initially Loaded) -->
+          <svg id="theme-icon" viewBox="0 0 24 24">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- DASHBOARD WORKSPACE -->
+    <main class="dashboard-grid">
+      
+      <!-- LEFT HAND COLUMN: INPUT & STATS -->
+      <section class="col-left">
+        
+        <!-- STATS CARD -->
+        <div class="glass-card highlight-card">
+          <div class="stat-label">Total Portfolio Value</div>
+          <div class="total-value" id="portfolio-value-display">$0.00</div>
+          <div>
+            <span class="total-shares-badge" id="portfolio-shares-display">
+              <!-- Grid Layout Icon -->
+              <svg style="width:14px; height:14px; fill:none; stroke:currentColor; stroke-width:2" viewBox="0 0 24 24">
+                <rect x="3" y="3" width="7" height="9" rx="1"></rect>
+                <rect x="14" y="3" width="7" height="5" rx="1"></rect>
+                <rect x="14" y="12" width="7" height="9" rx="1"></rect>
+                <rect x="3" y="16" width="7" height="5" rx="1"></rect>
+              </svg>
+              0 Stocks Added
+            </span>
+          </div>
+        </div>
+
+        <!-- ADD STOCK FORM CARD -->
+        <div class="glass-card">
+          <h2 class="card-title">
+            <!-- Plus Circle Icon -->
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="16"></line>
+              <line x1="8" y1="12" x2="16" y2="12"></line>
+            </svg>
+            Add Transaction
+          </h2>
+          
+          <form id="stock-form" onsubmit="event.preventDefault();">
+            <!-- Stock Symbol -->
+            <div class="form-group">
+              <label for="stock-symbol" class="form-label">Stock Symbol</label>
+              <div class="input-wrapper">
+                <!-- Briefcase Icon -->
+                <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                </svg>
+                <input 
+                  type="text" 
+                  id="stock-symbol" 
+                  class="input-field" 
+                  placeholder="e.g. AAPL" 
+                  list="stock-symbols" 
+                  autocomplete="off"
+                  required
+                >
+                <datalist id="stock-symbols">
+                  <option value="AAPL">AAPL (Apple Inc.) - $180</option>
+                  <option value="TSLA">TSLA (Tesla Inc.) - $250</option>
+                  <option value="GOOGL">GOOGL (Alphabet Inc.) - $140</option>
+                  <option value="MSFT">MSFT (Microsoft Corp.) - $330</option>
+                  <option value="AMZN">AMZN (Amazon.com Inc.) - $145</option>
+                  <option value="NVDA">NVDA (NVIDIA Corp.) - $950</option>
+                  <option value="META">META (Meta Platforms Inc.) - $520</option>
+                </datalist>
+              </div>
+              
+              <!-- Quick Chips Suggestions -->
+              <div class="stock-suggestions">
+                <span class="stock-chip" onclick="quickSelect('AAPL')">AAPL</span>
+                <span class="stock-chip" onclick="quickSelect('TSLA')">TSLA</span>
+                <span class="stock-chip" onclick="quickSelect('GOOGL')">GOOGL</span>
+                <span class="stock-chip" onclick="quickSelect('MSFT')">MSFT</span>
+                <span class="stock-chip" onclick="quickSelect('AMZN')">AMZN</span>
+                <span class="stock-chip" onclick="quickSelect('NVDA')">NVDA</span>
+                <span class="stock-chip" onclick="quickSelect('META')">META</span>
+              </div>
+
+              <!-- Price Preview Alert Area -->
+              <div class="price-preview" id="price-preview-box">
+                <span class="price-preview-label">Price Preview</span>
+                <span class="price-preview-value" id="price-preview-text">—</span>
+              </div>
+            </div>
+
+            <!-- Share Quantity -->
+            <div class="form-group">
+              <label for="stock-qty" class="form-label">Quantity</label>
+              <div class="input-wrapper">
+                <!-- Hashtag Icon -->
+                <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="4" y1="9" x2="20" y2="9"></line>
+                  <line x1="4" y1="15" x2="20" y2="15"></line>
+                  <line x1="10" y1="3" x2="8" y2="21"></line>
+                  <line x1="16" y1="3" x2="14" y2="21"></line>
+                </svg>
+                <input 
+                  type="number" 
+                  id="stock-qty" 
+                  class="input-field" 
+                  placeholder="e.g. 10" 
+                  min="1" 
+                  step="1"
+                  required
+                >
+              </div>
+            </div>
+
+            <button type="button" class="btn btn-primary" id="add-stock-btn" onclick="addStock()">
+              <!-- Plus Icon -->
+              <svg style="width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:2" viewBox="0 0 24 24">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              Add Stock
+            </button>
+          </form>
+        </div>
+
+        <!-- TRANSACTION ACTIONS -->
+        <div class="glass-card">
+          <h2 class="card-title">
+            <!-- Layers/Actions Icon -->
+            <svg viewBox="0 0 24 24">
+              <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+              <polyline points="2 17 12 22 22 17"></polyline>
+              <polyline points="2 12 12 17 22 12"></polyline>
+            </svg>
+            Controls & Tools
+          </h2>
+          <div class="actions-grid">
+            <button class="btn btn-danger" onclick="clearPortfolio()">
+              <!-- Trash Icon -->
+              <svg style="width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:2" viewBox="0 0 24 24">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                <line x1="10" y1="11" x2="10" y2="17"></line>
+                <line x1="14" y1="11" x2="14" y2="17"></line>
+              </svg>
+              Clear Portfolio
+            </button>
+            <div class="actions-row">
+              <button class="btn btn-secondary" onclick="exportCSV()">
+                <!-- File Text / CSV Icon -->
+                <svg style="width:15px; height:15px; fill:none; stroke:currentColor; stroke-width:2" viewBox="0 0 24 24">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                  <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+                CSV Export
+              </button>
+              <button class="btn btn-secondary" onclick="exportTXT()">
+                <!-- File text Icon -->
+                <svg style="width:15px; height:15px; fill:none; stroke:currentColor; stroke-width:2" viewBox="0 0 24 24">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                  <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+                TXT Export
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- RIGHT HAND COLUMN: STOCK DETAILS TABLE -->
+      <section class="col-right glass-card">
+        <div class="table-controls">
+          <!-- Search Bar -->
+          <div class="search-wrapper">
+            <svg class="input-icon" style="top:13px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input 
+              type="text" 
+              id="search-stocks" 
+              class="input-field" 
+              placeholder="Search stocks..." 
+              style="padding: 10px 14px 10px 42px;"
+              oninput="renderTable()"
+            >
+          </div>
+          
+          <!-- Stocks Counter -->
+          <span class="table-count-badge" id="showing-badge">Showing 0 of 0 holdings</span>
+        </div>
+
+        <!-- SCROLLABLE TABLE WRAPPER -->
+        <div class="table-container">
+          <table id="portfolio-table">
+            <thead>
+              <tr>
+                <th>Asset Symbol</th>
+                <th>Market Price</th>
+                <th>Qty Owned</th>
+                <th>Total Value</th>
+                <th style="width: 60px; text-align: center;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="portfolio-tbody">
+              <!-- Injected by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+      
+    </main>
+
+  </div>
+
+  <!-- FIXED FLOATING TOASTS NOTIFICATION -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>Developed with <span class="heart">♥</span> by Yashwanth H G</p>
+  </footer>
+
+  <script>
+    // HARDCODED PRICES DATA
+    const STOCK_PRICES = {
+      "AAPL": 180,
+      "TSLA": 250,
+      "GOOGL": 140,
+      "MSFT": 330,
+      "AMZN": 145,
+      "NVDA": 950,
+      "META": 520
+    };
+
+    // SYSTEM STATE
+    let portfolio = [];
+
+    // SELECT DOM ELEMENTS
+    const symbolInput = document.getElementById("stock-symbol");
+    const qtyInput = document.getElementById("stock-qty");
+    const pricePreviewText = document.getElementById("price-preview-text");
+    const pricePreviewBox = document.getElementById("price-preview-box");
+    const searchInput = document.getElementById("search-stocks");
+    const toastContainer = document.getElementById("toast-container");
+    const tableBody = document.getElementById("portfolio-tbody");
+    const totalValDisplay = document.getElementById("portfolio-value-display");
+    const totalSharesDisplay = document.getElementById("portfolio-shares-display");
+    const showingBadge = document.getElementById("showing-badge");
+    const themeToggleBtn = document.getElementById("theme-toggle");
+    const themeIcon = document.getElementById("theme-icon");
+
+    // 1. INITIAL LOADING DEFAULTS
+    document.addEventListener("DOMContentLoaded", () => {
+      loadPortfolio();
+      initTheme();
+      updateClock();
+      setInterval(updateClock, 1000);
+      setupPricePreview();
+      renderTable();
+    });
+
+    // 2. STORAGE MANAGEMENT
+    function savePortfolio() {
+      localStorage.setItem("stock_portfolio", JSON.stringify(portfolio));
+    }
+
+    // Load from LocalStorage
+    function loadPortfolio() {
+      const stored = localStorage.getItem("stock_portfolio");
+      if (stored) {
+        try {
+          portfolio = JSON.parse(stored);
+        } catch (e) {
+          portfolio = [];
+          showToast("Failed to load saved data. Resetting portfolio.", "error");
+        }
+      }
+    }
+
+    // 3. TOAST MESSAGES
+    function showToast(message, type = "success") {
+      const toast = document.createElement("div");
+      toast.className = `toast toast-${type}`;
+
+      let iconSvg = "";
+      if (type === "success") {
+        iconSvg = `<svg class="toast-icon toast-icon-success" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>`;
+      } else {
+        iconSvg = `<svg class="toast-icon toast-icon-error" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="16"></line>
+          <line x1="8" y1="12" x2="16" y2="12"></line>
+        </svg>`;
+      }
+
+      toast.innerHTML = `
+        ${iconSvg}
+        <span class="toast-msg">${message}</span>
+      `;
+
+      toastContainer.appendChild(toast);
+
+      // Clean up toast element from DOM after fadeOut animation ends
+      setTimeout(() => {
+        toast.remove();
+      }, 4000); // Animation duration is set to 3.5s delay + 0.35s fadeOut in CSS
+    }
+
+    // 4. LIVE TICKING CLOCK
+    function updateClock() {
+      const dateTextElement = document.getElementById("live-time");
+      const now = new Date();
+      
+      const options = {
+        weekday: 'short',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
+      };
+      
+      dateTextElement.textContent = now.toLocaleDateString('en-US', options);
+    }
+
+    // 5. THEME MANAGEMENT
+    function initTheme() {
+      const savedTheme = localStorage.getItem("portfolio_theme") || "dark";
+      setTheme(savedTheme);
+    }
+
+    function setTheme(theme) {
+      document.documentElement.setAttribute("data-theme", theme);
+      localStorage.setItem("portfolio_theme", theme);
+      
+      if (theme === "light") {
+        // Render Sun Icon
+        themeIcon.innerHTML = `
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        `;
+      } else {
+        // Render Moon Icon
+        themeIcon.innerHTML = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>`;
+      }
+    }
+
+    themeToggleBtn.addEventListener("click", () => {
+      const currentTheme = document.documentElement.getAttribute("data-theme");
+      const newTheme = currentTheme === "dark" ? "light" : "dark";
+      setTheme(newTheme);
+    });
+
+    // 6. PRICE PREVIEW LOGIC
+    function setupPricePreview() {
+      const updatePreview = () => {
+        const val = symbolInput.value.trim().toUpperCase();
+        if (STOCK_PRICES.hasOwnProperty(val)) {
+          pricePreviewText.textContent = `$${STOCK_PRICES[val]}.00`;
+          pricePreviewText.style.color = "var(--success-color)";
+        } else if (val === "") {
+          pricePreviewText.textContent = "—";
+          pricePreviewText.style.color = "var(--text-secondary)";
+        } else {
+          pricePreviewText.textContent = "Unavailable symbol";
+          pricePreviewText.style.color = "var(--error-color)";
+        }
+      };
+      
+      symbolInput.addEventListener("input", updatePreview);
+      symbolInput.addEventListener("change", updatePreview);
+    }
+
+    function quickSelect(symbol) {
+      symbolInput.value = symbol;
+      symbolInput.focus();
+      // Trigger price preview updates
+      const event = new Event('input', { bubbles: true });
+      symbolInput.dispatchEvent(event);
+    }
+
+    // 7. ADD STOCK CONTROLLER
+    function addStock() {
+      const symbol = symbolInput.value.trim().toUpperCase();
+      const qtyText = qtyInput.value.trim();
+      const qty = parseInt(qtyText, 10);
+
+      // Validation 1: Check Symbol
+      if (!STOCK_PRICES.hasOwnProperty(symbol)) {
+        showToast(`Error: Stock symbol "${symbol || 'Empty'}" is not supported.`, "error");
+        
+        // Highlight form input error status
+        symbolInput.style.borderColor = "var(--error-color)";
+        symbolInput.style.boxShadow = "0 0 0 3px rgba(244, 63, 94, 0.15)";
+        setTimeout(() => {
+          symbolInput.style.borderColor = "";
+          symbolInput.style.boxShadow = "";
+        }, 1500);
+        return;
+      }
+
+      // Validation 2: Check Quantity
+      if (isNaN(qty) || qty <= 0) {
+        showToast("Error: Quantity must be a valid integer greater than 0.", "error");
+        
+        qtyInput.style.borderColor = "var(--error-color)";
+        qtyInput.style.boxShadow = "0 0 0 3px rgba(244, 63, 94, 0.15)";
+        setTimeout(() => {
+          qtyInput.style.borderColor = "";
+          qtyInput.style.boxShadow = "";
+        }, 1500);
+        return;
+      }
+
+      // Check if stock already exists in portfolio
+      const existingStock = portfolio.find(item => item.symbol === symbol);
+
+      if (existingStock) {
+        existingStock.quantity += qty;
+        showToast(`Updated! Added ${qty} more share(s) to ${symbol} (Total: ${existingStock.quantity}).`, "success");
+      } else {
+        portfolio.push({
+          symbol: symbol,
+          quantity: qty
+        });
+        showToast(`Success! Added ${qty} share(s) of ${symbol} to portfolio.`, "success");
+      }
+
+      // Reset Inputs
+      symbolInput.value = "";
+      qtyInput.value = "";
+      pricePreviewText.textContent = "—";
+      pricePreviewText.style.color = "var(--text-secondary)";
+
+      // Persist & Update UI
+      savePortfolio();
+      renderTable();
+    }
+
+    // 8. DELETE TRANSACTION CONTROLLER
+    function deleteStock(symbol) {
+      portfolio = portfolio.filter(item => item.symbol !== symbol);
+      savePortfolio();
+      renderTable();
+      showToast(`Removed all holdings of ${symbol} from your portfolio.`, "success");
+    }
+
+    // 9. CLEAR ALL ASSETS CONTROLLER
+    function clearPortfolio() {
+      if (portfolio.length === 0) {
+        showToast("Your portfolio is already empty.", "error");
+        return;
+      }
+
+      const confirmation = confirm("Are you sure you want to clear your entire portfolio? This action cannot be undone.");
+      if (confirmation) {
+        portfolio = [];
+        savePortfolio();
+        renderTable();
+        showToast("Cleared portfolio successfully.", "success");
+      }
+    }
+
+    // 10. CALCULATION & INTERFACE RENDER
+    function renderTable() {
+      const searchVal = searchInput.value.trim().toLowerCase();
+      
+      // Filter list
+      const filtered = portfolio.filter(item => item.symbol.toLowerCase().includes(searchVal));
+      
+      // Clear table
+      tableBody.innerHTML = "";
+
+      // Calculate totals based on the original full portfolio (to keep header card stats accurate for the whole account)
+      let totalPortfolioValue = 0;
+      let totalDistinctStocks = portfolio.length;
+      let totalSharesCount = 0;
+
+      portfolio.forEach(item => {
+        const price = STOCK_PRICES[item.symbol];
+        totalPortfolioValue += (item.quantity * price);
+        totalSharesCount += item.quantity;
+      });
+
+      // Update Header Stats
+      totalValDisplay.textContent = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD'
+      }).format(totalPortfolioValue);
+
+      totalSharesDisplay.innerHTML = `
+        <svg style="width:14px; height:14px; fill:none; stroke:currentColor; stroke-width:2" viewBox="0 0 24 24">
+          <rect x="3" y="3" width="7" height="9" rx="1"></rect>
+          <rect x="14" y="3" width="7" height="5" rx="1"></rect>
+          <rect x="14" y="12" width="7" height="9" rx="1"></rect>
+          <rect x="3" y="16" width="7" height="5" rx="1"></rect>
+        </svg>
+        ${totalDistinctStocks} Stock${totalDistinctStocks === 1 ? '' : 's'} (${totalSharesCount} Share${totalSharesCount === 1 ? '' : 's'})
+      `;
+
+      // Update Filter Badge
+      showingBadge.textContent = `Showing ${filtered.length} of ${portfolio.length} holdings`;
+
+      // Populate Table Rows
+      if (filtered.length === 0) {
+        const emptyTr = document.createElement("tr");
+        emptyTr.innerHTML = `
+          <td colspan="5">
+            <div class="empty-state">
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="8" y1="12" x2="16" y2="12"></line>
+              </svg>
+              <p>${portfolio.length === 0 ? 'No stocks in your portfolio.' : 'No search results match.'}</p>
+              <span>${portfolio.length === 0 ? 'Enter a symbol and quantity to start tracking.' : 'Try searching for a different ticker symbol.'}</span>
+            </div>
+          </td>
+        `;
+        tableBody.appendChild(emptyTr);
+      } else {
+        filtered.forEach(item => {
+          const price = STOCK_PRICES[item.symbol];
+          const totalVal = item.quantity * price;
+
+          const tr = document.createElement("tr");
+          
+          const formattedPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price);
+          const formattedTotalVal = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(totalVal);
+
+          tr.innerHTML = `
+            <td>
+              <div class="symbol-td">
+                <span class="symbol-logo">${item.symbol.substring(0, 2)}</span>
+                <span>${item.symbol}</span>
+              </div>
+            </td>
+            <td style="font-weight: 500;">${formattedPrice}</td>
+            <td style="font-weight: 500;">${item.quantity}</td>
+            <td style="font-weight: 600; color: var(--text-primary);">${formattedTotalVal}</td>
+            <td style="text-align: center;">
+              <button class="delete-btn" onclick="deleteStock('${item.symbol}')" aria-label="Delete ${item.symbol}">
+                <!-- Trash SVG -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+              </button>
+            </td>
+          `;
+          tableBody.appendChild(tr);
+        });
+      }
+    }
+
+    // 11. DOWNLOAD EXPORT TOOLS
+    // CSV format
+    function exportCSV() {
+      if (portfolio.length === 0) {
+        showToast("Cannot export: Portfolio is empty.", "error");
+        return;
+      }
+
+      let csvContent = "Stock Symbol,Price per Share ($),Quantity,Total Value ($)\r\n";
+      
+      let totalSum = 0;
+      portfolio.forEach(item => {
+        const price = STOCK_PRICES[item.symbol];
+        const total = item.quantity * price;
+        totalSum += total;
+        csvContent += `${item.symbol},${price},${item.quantity},${total}\r\n`;
+      });
+      
+      csvContent += `TOTALS,,${portfolio.reduce((sum, item) => sum + item.quantity, 0)},${totalSum}\r\n`;
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", `portfolio_report_${new Date().toISOString().split('T')[0]}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast("CSV file generated and download started.", "success");
+    }
+
+    // TXT format
+    function exportTXT() {
+      if (portfolio.length === 0) {
+        showToast("Cannot export: Portfolio is empty.", "error");
+        return;
+      }
+
+      const timestamp = new Date().toLocaleString();
+      let txtContent = "";
+      txtContent += "========================================================\r\n";
+      txtContent += "             STOCK PORTFOLIO REPORT                     \r\n";
+      txtContent += "========================================================\r\n";
+      txtContent += `Generated On:  ${timestamp}\r\n`;
+      txtContent += `Total Holdings: ${portfolio.length} Unique Stocks\r\n`;
+      
+      let grandTotal = 0;
+      portfolio.forEach(item => {
+        grandTotal += (item.quantity * STOCK_PRICES[item.symbol]);
+      });
+      
+      txtContent += `Total Portfolio Value: $${grandTotal.toFixed(2)}\r\n`;
+      txtContent += "--------------------------------------------------------\r\n";
+      txtContent += "SYMBOL      PRICE       QUANTITY      TOTAL VALUE\r\n";
+      txtContent += "--------------------------------------------------------\r\n";
+
+      portfolio.forEach(item => {
+        const price = STOCK_PRICES[item.symbol];
+        const val = item.quantity * price;
+        
+        // Custom spacing alignments
+        const symCol = item.symbol.padEnd(12, ' ');
+        const priceCol = `$${price.toFixed(2)}`.padEnd(12, ' ');
+        const qtyCol = item.quantity.toString().padEnd(14, ' ');
+        const valCol = `$${val.toFixed(2)}`;
+        
+        txtContent += `${symCol}${priceCol}${qtyCol}${valCol}\r\n`;
+      });
+      
+      txtContent += "--------------------------------------------------------\r\n";
+      txtContent += `GRAND TOTAL:                               $${grandTotal.toFixed(2)}\r\n`;
+      txtContent += "========================================================\r\n";
+      txtContent += "Developed by Yashwanth H G\r\n";
+
+      const blob = new Blob([txtContent], { type: 'text/plain;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", `portfolio_report_${new Date().toISOString().split('T')[0]}.txt`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast("TXT file generated and download started.", "success");
+    }
+  </script>
+</body>
+</html>
